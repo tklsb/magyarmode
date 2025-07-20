@@ -38,8 +38,8 @@ import java.nio.file.Path;
 
 public class MagyarMode implements ModInitializer {
   private static final StringReplacer REPLACER = new StringReplacer()
-      .register("e([zZ])", "ë$1")
-      .register("E([zZ])", "Ë$1");
+      .register("(^|\\s)e([zZ])($|\\s)", "$1ë$2$3")
+      .register("(^|\\s)E([zZ])($|\\s)", "$1Ë$2$3");
 
   private static final Path CONFIG_FILE = Path.of("config/magyarmode");
 
