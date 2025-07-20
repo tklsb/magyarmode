@@ -45,6 +45,18 @@ public class MagyarMode implements ModInitializer {
 
   private static boolean ENABLED = true;
 
+  private static void writeConfig() {
+    try {
+      Files.write(
+          CONFIG_FILE,
+          new byte[] {
+              (byte)(ENABLED ? '1' : '0')
+          });
+    } catch(IOException ignored) {
+      // Who cares
+    }
+  }
+
   @Override
   public void onInitialize() {
     // Load ENABLED state, if CONFIG_FILE exists
@@ -57,17 +69,7 @@ public class MagyarMode implements ModInitializer {
     } catch(IOException ignored) {}
 
     // Remember ENABLED state on shutdown
-    Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-      try {
-        Files.write(
-            CONFIG_FILE,
-            new byte[] {
-                (byte)(ENABLED ? '1' : '0')
-            });
-      } catch(IOException ignored) {
-        // Who cares
-      }
-    }));
+    Runtime.getRuntime().addShutdownHook(new Thread(MagyarMode::writeConfig));
 
     // Register command "/magyarmode" to toggle ENABLED state
     ClientCommandRegistrationCallback.EVENT.register(
@@ -76,6 +78,8 @@ public class MagyarMode implements ModInitializer {
               ClientCommandManager.literal("magyarmode")
                                   .executes(commandContext -> {
                                     ENABLED = !ENABLED;
+
+                                    writeConfig();
 
                                     commandContext.getSource()
                                                   .sendFeedback(Text.literal(
