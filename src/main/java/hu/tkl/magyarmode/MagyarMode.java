@@ -73,23 +73,21 @@ public class MagyarMode implements ModInitializer {
 
     // Register command "/magyarmode" to toggle ENABLED state
     ClientCommandRegistrationCallback.EVENT.register(
-        (dispatcher, registryAccess) -> {
-          dispatcher.register(
-              ClientCommandManager.literal("magyarmode")
-                                  .executes(commandContext -> {
-                                    ENABLED = !ENABLED;
+        (dispatcher, registryAccess) -> dispatcher.register(
+            ClientCommandManager.literal("magyarmode")
+                                .executes(commandContext -> {
+                                  ENABLED = !ENABLED;
 
-                                    writeConfig();
+                                  writeConfig();
 
-                                    commandContext.getSource()
-                                                  .sendFeedback(Text.literal(
-                                                      (ENABLED ? "En" : "Dis")
-                                                          + "abled " +
-																													"MagyarMode"));
+                                  commandContext.getSource()
+                                                .sendFeedback(Text.literal(
+                                                    (ENABLED ? "En" : "Dis")
+                                                        + "abled " +
+                                                        "MagyarMode"));
 
-                                    return 0;
-                                  }));
-        });
+                                  return 0;
+                                })));
   }
 
   public static String fixMessage(String chatMessage) {
