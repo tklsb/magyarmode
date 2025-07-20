@@ -37,9 +37,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public class MagyarMode implements ModInitializer {
+  private static final String SEPARATORS = "[ .,\\-!?(){}\\[\\]#]";
+  private static final String PRE = "(^|" + SEPARATORS + ")";
+  private static final String POST = "($|" + SEPARATORS + ")";
+
   private static final StringReplacer REPLACER = new StringReplacer()
-      .register("(^|\\s)e([zZ])($|\\s)", "$1ë$2$3")
-      .register("(^|\\s)E([zZ])($|\\s)", "$1Ë$2$3");
+      .register(PRE + "e([zZ])" + POST, "$1ë$2$3")
+      .register(PRE + "E([zZ])" + POST, "$1Ë$2$3");
 
   private static final Path CONFIG_FILE = Path.of("config/magyarmode");
 
